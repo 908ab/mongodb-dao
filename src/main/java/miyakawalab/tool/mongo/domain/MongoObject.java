@@ -22,7 +22,7 @@ public interface MongoObject extends DocumentConvertible {
                     updatedField.setAccessible(true);
                     field.set(this, updatedField.get(object));
                 } catch (NoSuchFieldException | IllegalAccessException e) {
-                    throw new InternalServerErrorException("can't update miyakawalab.tool.mongo object.");
+                    throw new InternalServerErrorException("can't update mongo object.\n" + e.getMessage());
                 }
             });
     }

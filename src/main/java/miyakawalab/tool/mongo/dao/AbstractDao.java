@@ -153,7 +153,7 @@ public abstract class AbstractDao<T extends MongoObject> {
         try {
             return (T) this.tClass.newInstance().fromDocument(document);
         } catch (InstantiationException | IllegalAccessException e) {
-            throw new InternalServerErrorException("can't convert document to object.");
+            throw new InternalServerErrorException("can't convert document to object.\n" + e.getMessage());
         }
     }
 }

@@ -22,13 +22,13 @@ public interface DocumentConvertible {
             try {
                 Object object = field.get(this);
                 if (hasAnnotation(field, DocumentConvertibleAnnotation.class)) {
-//                  // domainの中にdomainがある場合の処理
+                    // documentの中にdomainがある場合の処理
                     document.append(
                         camelToSnake(field.getName()),
                         ((DocumentConvertible) object).toDocument()
                     );
                 } else if (hasAnnotation(field, DocumentConvertibleListAnnotation.class)) {
-                    // domainの中にdomainのlistがある場合の処理
+                    // documentの中にdomainのlistがある場合の処理
                     document.append(camelToSnake(
                         field.getName()),
                         ((List<DocumentConvertible>) object).stream()
@@ -39,7 +39,7 @@ public interface DocumentConvertible {
                     document.append(camelToSnake(field.getName()), object);
                 }
             } catch (IllegalAccessException e) {
-                throw new InternalServerErrorException("can't convert object to document.");
+                throw new InternalServerErrorException("can't convert object to document.\n" + e.getMessage());
             }
         });
         return document;
@@ -51,12 +51,12 @@ public interface DocumentConvertible {
             field.setAccessible(true);
             try {
                 if (hasAnnotation(field, DocumentConvertibleAnnotation.class)) {
-                    // domainの中にdomainがある場合の処理
+                    // documentの中にdocumentがある場合の処理
                     Document subDocument = document.get(camelToSnake(field.getName()), Document.class);
                     DocumentConvertible object = (DocumentConvertible) field.getType().newInstance();
                     field.set(this, object.fromDocument(subDocument));
                 } else if (hasAnnotation(field, DocumentConvertibleListAnnotation.class)) {
-                    // domainの中にdomainのlistがある場合の処理
+                    // documentの中にdocumentのlistがある場合の処理
                     ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
                     Class<? extends DocumentConvertible> listType = (Class<? extends DocumentConvertible>) parameterizedType.getActualTypeArguments()[0];
 
@@ -66,7 +66,7 @@ public interface DocumentConvertible {
                             try {
                                 return listType.newInstance().fromDocument(d);
                             } catch (IllegalAccessException | InstantiationException e) {
-                                throw new InternalServerErrorException("can't convert document to object in list.");
+                                throw new InternalServerErrorException("can't convert document to object in list.\n" + e.getMessage());
                             }
                         })
                         .collect(Collectors.toList());
@@ -75,7 +75,7 @@ public interface DocumentConvertible {
                     field.set(this, document.get(camelToSnake(field.getName()), field.getType()));
                 }
             } catch (IllegalAccessException | InstantiationException e) {
-                throw new InternalServerErrorException("can't convert document to object.");
+                throw new InternalServerErrorException("can't convert document to object.\n" + e.getMessage());
             }
         });
         return this;
