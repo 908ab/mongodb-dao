@@ -1,7 +1,7 @@
-package mongo.domain;
+package miyakawalab.tool.mongo.domain;
 
 
-import mongo.annotation.MongoUpdateIgnore;
+import miyakawalab.tool.mongo.annotation.MongoUpdateIgnore;
 
 import javax.ws.rs.InternalServerErrorException;
 import java.lang.reflect.Field;
@@ -22,7 +22,7 @@ public interface MongoObject extends DocumentConvertible {
                     updatedField.setAccessible(true);
                     field.set(this, updatedField.get(object));
                 } catch (NoSuchFieldException | IllegalAccessException e) {
-                    throw new InternalServerErrorException("can't update mongo object.");
+                    throw new InternalServerErrorException("can't update miyakawalab.tool.mongo object.");
                 }
             });
     }

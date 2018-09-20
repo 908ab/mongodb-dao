@@ -1,4 +1,4 @@
-package mongo.domain;
+package miyakawalab.tool.mongo.domain;
 
 import com.google.common.base.CaseFormat;
 import org.springframework.core.annotation.AnnotationUtils;

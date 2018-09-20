@@ -1,7 +1,7 @@
-package mongo.domain;
+package miyakawalab.tool.mongo.domain;
 
-import mongo.annotation.DocumentConvertibleAnnotation;
-import mongo.annotation.DocumentConvertibleListAnnotation;
+import miyakawalab.tool.mongo.annotation.DocumentConvertibleAnnotation;
+import miyakawalab.tool.mongo.annotation.DocumentConvertibleListAnnotation;
 import org.bson.Document;
 
 import javax.ws.rs.InternalServerErrorException;
@@ -10,8 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static mongo.domain.Util.hasAnnotation;
-import static mongo.domain.Util.camelToSnake;
+import static miyakawalab.tool.mongo.domain.Util.hasAnnotation;
+import static miyakawalab.tool.mongo.domain.Util.camelToSnake;
 
 public interface DocumentConvertible {
     @SuppressWarnings("unchecked")
