@@ -47,7 +47,7 @@ public class Address implements DocumentConvertible {
     <dependency>
         <groupId>miyakawalab.tool</groupId>
         <artifactId>mongodb-dao</artifactId>
-        <version>1.0</version>
+        <version>${version}</version>
     </dependency>
 </dependencies>
 <repositories>
