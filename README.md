@@ -3,7 +3,8 @@ maven repository
 
 
 ## Description
-MongoDB専用のDAO
+* MongoDB専用のDAO
+* _idはinsertするときに自動で割り振られます
 
 ## Usage
 ```
