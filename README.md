@@ -7,6 +7,7 @@ maven repository
 * _idはinsertするときに自動で割り振られます
 
 ## Usage
+* MemberDao.java
 ```
 public class MemberDao extends AbstractDao<Member> {
     public MemberDao() {
@@ -15,6 +16,7 @@ public class MemberDao extends AbstractDao<Member> {
 }
 ```
 
+* Member.java
 ```
 public class Member implements MongoObject {
     private Long _id;
@@ -29,6 +31,7 @@ public class Member implements MongoObject {
 }
 ```
 
+* Address.java
 ```
 public class Address implements DocumentConvertible {
     private String postNumber;
@@ -38,6 +41,25 @@ public class Address implements DocumentConvertible {
     // getter
     // setter
 }
+```
+
+* application-context.xml(Spring)
+```
+<!-- AbstractDao -->
+<bean id="mongoClient" class="com.mongodb.MongoClient" destroy-method="close">
+    <constructor-arg type="java.lang.String" value="${mongodb.host}" />
+    <constructor-arg type="int" value="${mongodb.port}" />
+</bean>
+<bean id="abstractDao" class="miyakawalab.tool.mongo.dao.AbstractDao" abstract="true"
+      depends-on="mongoClient" init-method="init">
+    <property name="mongoClient" ref="mongoClient" />
+    <property name="dbName" value="${mongodb.db.name}" />
+</bean>
+
+<!-- Subject -->
+<bean id="memberDao" class="package.MemberDao" parent="abstractDao">
+    <property name="collectionName" value="members" />
+</bean>
 ```
 
 ## Install
