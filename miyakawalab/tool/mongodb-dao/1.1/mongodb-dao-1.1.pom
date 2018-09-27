@@ -6,7 +6,7 @@
 
     <groupId>miyakawalab.tool</groupId>
     <artifactId>mongodb-dao</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
 
     <name>mongodb-dao</name>
@@ -60,7 +60,21 @@
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
         </dependency>
+
+        <!-- miyakawalab -->
+        <dependency>
+            <groupId>miyakawalab.tool</groupId>
+            <artifactId>repository-base</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>repository-base</id>
+            <url>https://raw.github.com/908ab/repository-base/mvn-repo/</url>
+        </repository>
+    </repositories>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
