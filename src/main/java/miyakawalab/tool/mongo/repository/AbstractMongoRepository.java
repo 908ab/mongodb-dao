@@ -16,12 +16,12 @@ public abstract class AbstractMongoRepository<Domain, Mongo extends MongoObject>
     private MongoDao<Mongo> dao;
 
     @Override
-    public final Long insertOne(Domain domain) {
+    public Long insertOne(Domain domain) {
         return this.dao.insertOne(this.toMongo(domain));
     }
 
     @Override
-    public final void insertMany(List<Domain> domainList) {
+    public void insertMany(List<Domain> domainList) {
         List<Mongo> mongoList = domainList.stream()
             .map(this::toMongo)
             .collect(Collectors.toList());
@@ -29,31 +29,31 @@ public abstract class AbstractMongoRepository<Domain, Mongo extends MongoObject>
     }
 
     @Override
-    public final Domain findById(Long id) throws DomainNotFoundException {
+    public Domain findById(Long id) throws DomainNotFoundException {
         Mongo mongo = this.dao.findOneById(id)
             .orElseThrow(DomainNotFoundException::new);
         return this.toDomain(mongo);
     }
 
     @Override
-    public final List<Domain> findAll() {
+    public List<Domain> findAll() {
         return this.dao.findAll().stream()
             .map(this::toDomain)
             .collect(Collectors.toList());
     }
 
     @Override
-    public final Long countAll() {
+    public Long countAll() {
         return this.dao.countAll();
     }
 
     @Override
-    public final void updateById(Long id, Domain domain) {
+    public void updateById(Long id, Domain domain) {
         this.dao.updateOneById(id, this.toMongo(domain));
     }
 
     @Override
-    public final void deleteById(Long id) {
+    public void deleteById(Long id) {
         this.dao.deleteOneById(id);
     }
 
