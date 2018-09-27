@@ -9,7 +9,7 @@ maven repository
 ## Usage
 * MemberDao.java
 ```
-public class MemberDao extends AbstractDao<Member> {
+public class MemberDao extends AbstractMongoDao<Member> {
     public MemberDao() {
         super(Member.class);
     }
@@ -45,19 +45,19 @@ public class Address implements DocumentConvertible {
 
 * application-context.xml(Spring)
 ```
-<!-- AbstractDao -->
+<!-- AbstractMongoDao -->
 <bean id="mongoClient" class="com.mongodb.MongoClient" destroy-method="close">
     <constructor-arg type="java.lang.String" value="${mongodb.host}" />
     <constructor-arg type="int" value="${mongodb.port}" />
 </bean>
-<bean id="abstractDao" class="miyakawalab.tool.mongo.dao.AbstractDao" abstract="true"
+<bean id="abstractMongoDao" class="miyakawalab.tool.mongo.dao.AbstractMongoDao" abstract="true"
       depends-on="mongoClient" init-method="init">
     <property name="mongoClient" ref="mongoClient" />
     <property name="dbName" value="${mongodb.db.name}" />
 </bean>
 
 <!-- Subject -->
-<bean id="memberDao" class="package.MemberDao" parent="abstractDao">
+<bean id="memberDao" class="package.MemberDao" parent="abstractMongoDao">
     <property name="collectionName" value="members" />
 </bean>
 ```
@@ -83,4 +83,6 @@ public class Address implements DocumentConvertible {
 
 ## Version
 > 1.0
+
+> 1.1 MongoDaoインタフェースの導入 クラス名の変更等
 
