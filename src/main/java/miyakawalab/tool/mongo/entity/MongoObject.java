@@ -1,4 +1,4 @@
-package miyakawalab.tool.mongo.domain;
+package miyakawalab.tool.mongo.entity;
 
 
 import miyakawalab.tool.mongo.annotation.MongoUpdateIgnore;

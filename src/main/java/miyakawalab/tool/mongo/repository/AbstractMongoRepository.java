@@ -3,7 +3,7 @@ package miyakawalab.tool.mongo.repository;
 import miyakawa.tool.repository.base.RepositoryInterface;
 import miyakawa.tool.repository.exception.DomainNotFoundException;
 import miyakawalab.tool.mongo.dao.MongoDao;
-import miyakawalab.tool.mongo.domain.MongoObject;
+import miyakawalab.tool.mongo.entity.MongoObject;
 
 import java.util.List;
 import java.util.stream.Collectors;

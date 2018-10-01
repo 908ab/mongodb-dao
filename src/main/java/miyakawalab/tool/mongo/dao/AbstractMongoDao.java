@@ -7,7 +7,7 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import lombok.Setter;
-import miyakawalab.tool.mongo.domain.MongoObject;
+import miyakawalab.tool.mongo.entity.MongoObject;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
