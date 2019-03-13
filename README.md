@@ -86,3 +86,5 @@ public class Address implements DocumentConvertible {
 
 > 1.1 MongoDaoインタフェースの導入 クラス名の変更等
 
+> 1.2 更新用メソッドの修正
+
