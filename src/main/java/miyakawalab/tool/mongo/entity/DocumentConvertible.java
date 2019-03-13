@@ -2,6 +2,7 @@ package miyakawalab.tool.mongo.entity;
 
 import miyakawalab.tool.mongo.annotation.DocumentConvertibleAnnotation;
 import miyakawalab.tool.mongo.annotation.DocumentConvertibleListAnnotation;
+import miyakawalab.tool.mongo.annotation.MongoUpdateIgnore;
 import org.bson.Document;
 
 import javax.ws.rs.InternalServerErrorException;
@@ -10,8 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static miyakawalab.tool.mongo.entity.Util.hasAnnotation;
 import static miyakawalab.tool.mongo.entity.Util.camelToSnake;
+import static miyakawalab.tool.mongo.entity.Util.hasAnnotation;
 
 public interface DocumentConvertible {
     @SuppressWarnings("unchecked")
@@ -22,13 +23,43 @@ public interface DocumentConvertible {
             try {
                 Object object = field.get(this);
                 if (hasAnnotation(field, DocumentConvertibleAnnotation.class)) {
-                    // documentの中にdomainがある場合の処理
+                    // documentの中にdocumentがある場合の処理
                     document.append(
                         camelToSnake(field.getName()),
                         ((DocumentConvertible) object).toDocument()
                     );
                 } else if (hasAnnotation(field, DocumentConvertibleListAnnotation.class)) {
-                    // documentの中にdomainのlistがある場合の処理
+                    // documentの中にdocumentのlistがある場合の処理
+                    document.append(camelToSnake(
+                        field.getName()),
+                        ((List<DocumentConvertible>) object).stream()
+                            .map(DocumentConvertible::toDocument)
+                            .collect(Collectors.toList())
+                    );
+                } else {
+                    document.append(camelToSnake(field.getName()), object);
+                }
+            } catch (IllegalAccessException e) {
+                throw new InternalServerErrorException("can't convert object to document.\n" + e.getMessage());
+            }
+        });
+        return document;
+    }
+
+    public default Document update() {
+        Document document = new Document();
+        Arrays.stream(this.getClass().getDeclaredFields()).filter(field -> !field.getName().equals("_id")).filter(field -> !Util.hasAnnotation(field, MongoUpdateIgnore.class)).forEach(field -> {
+            field.setAccessible(true);
+            try {
+                Object object = field.get(this);
+                if (hasAnnotation(field, DocumentConvertibleAnnotation.class)) {
+                    // documentの中にdocumentがある場合の処理
+                    document.append(
+                        camelToSnake(field.getName()),
+                        ((DocumentConvertible) object).toDocument()
+                    );
+                } else if (hasAnnotation(field, DocumentConvertibleListAnnotation.class)) {
+                    // documentの中にdocumentのlistがある場合の処理
                     document.append(camelToSnake(
                         field.getName()),
                         ((List<DocumentConvertible>) object).stream()

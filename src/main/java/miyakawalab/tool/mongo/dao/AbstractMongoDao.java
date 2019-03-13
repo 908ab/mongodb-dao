@@ -117,18 +117,19 @@ public abstract class AbstractMongoDao<T extends MongoObject> implements MongoDa
 
     @Override
     public void updateOne(Bson query, T object) {
-        this.collection.updateOne(query, new Document("$set", object.toDocument()));
+        this.collection.updateOne(query, new Document("$set", object.update()));
     }
 
     @Override
     public void updateOneById(Long id, T object) {
+        object.set_id(id);
         this.updateOne(Filters.eq("_id", id), object);
     }
 
     @Override
     public void updateMany(Bson query, List<T> objectList) {
         List<Document> documentList = objectList.stream()
-            .map(T::toDocument)
+            .map(T::update)
             .collect(Collectors.toList());
         this.collection.updateMany(query, new Document("$set", documentList));
     }
